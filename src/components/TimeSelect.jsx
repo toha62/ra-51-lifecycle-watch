@@ -1,24 +1,37 @@
 import { useState } from "react";
 
-export default function TimeSelect() {
-  const [timeZone, setTimeZone] = useState('UTC')
+export default function TimeSelect({ callBack }) {
+  const [timeZone, setTimeZone] = useState({shiftStr: 'UTC', shiftNum: 0})
 
-  const handleSubmit = (evt) => {
+  const handleSubmit = (evt, callBack) => {
     evt.preventDefault();
-    console.log(evt.target);
+
+    callBack(evt.target.city.value, timeZone.shiftNum);
   };
 
-  const handleChange = ({ target }) => {
-    console.log(target.value);
-    setTimeZone(target.value);
+  const handleChange = ({ target: {value} }) => { 
+    if (value.length <= 3) {
+      setTimeZone({shiftStr: 'UTC', shiftNum: 0});
+      return;
+    }
+    if (value.length === 4 && value.match(/UTC[+-]/)) {
+      setTimeZone({shiftStr: value, shiftNum: 0});
+      return;
+    }
+
+    const timeZoneShift = value.match(/UTC[+-](\d{1,2})$/) && +value.match(/UTC([+-]\d{1,2})$/)[1];
+    
+    if (timeZoneShift && Math.abs(timeZoneShift) <= 12) {
+      setTimeZone({shiftStr: value, shiftNum: timeZoneShift});
+    }    
   };
 
   return (    
-    <form action="" className="time-select" onSubmit={handleSubmit}>
+    <form action="" className="time-select" onSubmit={(evt) => handleSubmit(evt, callBack)}>
       <div className="form-row">
         <div className="form-group col-3">
           <label htmlFor="name">Название</label>
-          <select className="custom-select" id="name" defaultValue="London">
+          <select className="custom-select" id="city" defaultValue="London">
             <option value="1">New York</option>
             <option value="2">Moscow</option>
             <option value="3">London</option>
@@ -27,7 +40,15 @@ export default function TimeSelect() {
         </div>
         <div className="form-group col-3">
           <label htmlFor="time-zone">Временная зона</label>
-          <input type="text" className="form-control" id="time-zone" value={timeZone} onChange={handleChange} />            
+          <input type="text"
+            className="form-control"
+            id="timeZone"
+            value={timeZone.shiftStr}
+            onChange={handleChange}
+            data-toggle="tooltip"
+            data-placement="top"
+            title="input format: UTC+0 or UTC-0"
+          />            
         </div>
         <div className="form-group col mybutton">
           <button type="submit" className="btn btn-primary mb">Добавить</button>
