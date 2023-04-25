@@ -1,0 +1,37 @@
+
+.mybutton {
+  align-self: flex-end;
+}
+
+/* body {
+  font: Arial, sans-serif; 
+}
+
+.container {
+  width: 100vw;
+  height: 100vh;
+  margin: 0 auto;
+  padding: 40px 0;
+}
+
+.box {
+  display: block;
+  box-sizing: border-box;
+  width: 220px;
+  height: 30px;
+
+  padding: 0 15px;
+  margin: 5px auto;
+
+  border: none;
+}
+
+.user-input {
+  background-color: #fff;
+  color: #000;  
+}
+
+.result {
+  background-color: #504b4b;
+  color: #fff;  
+} */
