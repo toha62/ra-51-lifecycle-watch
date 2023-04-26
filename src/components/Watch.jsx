@@ -1,30 +1,33 @@
 import { useEffect, useState } from "react";
 
 export default function Watch({ city, timeZone, handleClose }) {
-  const timeCounter = new Date();
-  const [seconds, setSeconds] = useState(timeCounter.getUTCSeconds());
-  const [minutes, setMinutes] = useState(timeCounter.getUTCMinutes());
-  const [hours, sethours] = useState(timeCounter.getUTCHours(timeCounter.setHours(timeCounter.getHours() + timeZone)));
-  
-  const setValueWithFormat = (value, setFunc) => {
+  const getFormattedValue = (value) => {
     let strValue = value.toString();
     strValue = strValue.length === 2 ? strValue : '0' + strValue;
-    setFunc(strValue);
+    return strValue;
   }
 
+  const timeCounter = new Date();
+  timeCounter.setHours(timeCounter.getHours() + timeZone);
+
+  const [seconds, setSeconds] = useState(getFormattedValue(timeCounter.getUTCSeconds()));
+  const [minutes, setMinutes] = useState(getFormattedValue(timeCounter.getUTCMinutes()));
+  const [hours, sethours] = useState(getFormattedValue(timeCounter.getUTCHours()));
+ 
   useEffect(
     () => {
-      const timer = setInterval(() => { 
-        timeCounter.setTime(timeCounter.getTime() + 1000);
-        
-        setValueWithFormat(timeCounter.getUTCSeconds(), setSeconds);
-        setValueWithFormat(timeCounter.getUTCMinutes(), setMinutes);
-        setValueWithFormat(timeCounter.getUTCHours(), sethours);
+      const timerId = setInterval(() => {         
+        const timeCounter = new Date();       
+        timeCounter.setHours(timeCounter.getHours() + timeZone);
+
+        setSeconds(getFormattedValue(timeCounter.getUTCSeconds()));
+        setMinutes(getFormattedValue(timeCounter.getUTCMinutes()));
+        sethours(getFormattedValue(timeCounter.getUTCHours()));
       }, 1000);
 
       return () => {
         console.log('clear');
-        clearInterval(timer);
+        clearInterval(timerId);
       }
     },
     [],
