@@ -4,25 +4,27 @@ export default function Watch({ city, timeZone, handleClose }) {
   const getFormattedValue = (value) => {
     let strValue = value.toString();
     strValue = strValue.length === 2 ? strValue : '0' + strValue;
+    
     return strValue;
   }
 
-  const timeCounter = new Date();
-  timeCounter.setHours(timeCounter.getHours() + timeZone);
+  const getCurrenTime = () => {
+    const timeCounter = new Date();
+    timeCounter.setHours(timeCounter.getHours() + timeZone);
+    
+    const seconds = getFormattedValue(timeCounter.getUTCSeconds());
+    const minutes = getFormattedValue(timeCounter.getUTCMinutes());
+    const hours = getFormattedValue(timeCounter.getUTCHours());
 
-  const [seconds, setSeconds] = useState(getFormattedValue(timeCounter.getUTCSeconds()));
-  const [minutes, setMinutes] = useState(getFormattedValue(timeCounter.getUTCMinutes()));
-  const [hours, sethours] = useState(getFormattedValue(timeCounter.getUTCHours()));
- 
+    return {seconds, minutes, hours};
+  };
+
+  const [clock, setClock] = useState(getCurrenTime());
+
   useEffect(
     () => {
-      const timerId = setInterval(() => {         
-        const timeCounter = new Date();       
-        timeCounter.setHours(timeCounter.getHours() + timeZone);
-
-        setSeconds(getFormattedValue(timeCounter.getUTCSeconds()));
-        setMinutes(getFormattedValue(timeCounter.getUTCMinutes()));
-        sethours(getFormattedValue(timeCounter.getUTCHours()));
+      const timerId = setInterval(() => {     
+        setClock(getCurrenTime);
       }, 1000);
 
       return () => {
@@ -37,9 +39,9 @@ export default function Watch({ city, timeZone, handleClose }) {
     <>  
       <h4>{city}</h4> 
       <div>
-        <span key="1">{hours} : </span>
-        <span key="2">{minutes} : </span>
-        <span key="3">{seconds} </span>
+        <span key="1">{clock.hours} : </span>
+        <span key="2">{clock.minutes} : </span>
+        <span key="3">{clock.seconds} </span>
       </div>   
       <div>
         <button className="btn mb" onClick={handleClose}>close</button>
