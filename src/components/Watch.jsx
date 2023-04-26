@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 
-export default function Watch({ timeZone, timeShift, handleClose }) {
+export default function Watch({ city, timeZone, handleClose }) {
   const timeCounter = new Date();
   const [seconds, setSeconds] = useState(timeCounter.getUTCSeconds());
   const [minutes, setMinutes] = useState(timeCounter.getUTCMinutes());
@@ -28,12 +28,11 @@ export default function Watch({ timeZone, timeShift, handleClose }) {
       }
     },
     [],
-  );
-
-  
+  );  
   
   return (
-    <>   
+    <>  
+      <h4>{city}</h4> 
       <div>
         <span key="1">{hours} : </span>
         <span key="2">{minutes} : </span>

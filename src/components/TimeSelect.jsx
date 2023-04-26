@@ -1,29 +1,18 @@
 import { useState } from "react";
 
 export default function TimeSelect({ cityList, callBack }) {
-  const [timeZone, setTimeZone] = useState({shiftStr: 'UTC', shiftNum: 0})
+  const [timeZone, setTimeZone] = useState(cityList[0].shift)
 
   const handleSubmit = (evt, callBack) => {
     evt.preventDefault();
-
-    callBack(evt.target.city.value, timeZone.shiftNum);
+    
+    callBack(evt.target.city.value);
   };
 
-  const handleChange = ({ target: {value} }) => { 
-    if (value.length <= 3) {
-      setTimeZone({shiftStr: 'UTC', shiftNum: 0});
-      return;
-    }
-    if (value.length === 4 && value.match(/UTC[+-]/)) {
-      setTimeZone({shiftStr: value, shiftNum: 0});
-      return;
-    }
-
-    const timeZoneShift = value.match(/UTC[+-](\d{1,2})$/) && +value.match(/UTC([+-]\d{1,2})$/)[1];
+  const handleChange = ({ target: {value} }) => {     
+    const timeShift = cityList.find(city => city.id === +value).shift;
     
-    if (timeZoneShift && Math.abs(timeZoneShift) <= 12) {
-      setTimeZone({shiftStr: value, shiftNum: timeZoneShift});
-    }    
+    setTimeZone(timeShift);
   };
 
   return (    
@@ -31,7 +20,7 @@ export default function TimeSelect({ cityList, callBack }) {
       <div className="form-row">
         <div className="form-group col-3">
           <label htmlFor="name">Название</label>
-          <select className="custom-select" id="city" defaultValue="London">
+          <select className="custom-select" id="city" defaultValue={cityList[0].name} onChange={handleChange}>
             {cityList.map(city =>
               <option key={city.id} value={city.id}>{city.name}</option>
             )}           
@@ -42,11 +31,8 @@ export default function TimeSelect({ cityList, callBack }) {
           <input type="text"
             className="form-control"
             id="timeZone"
-            value={timeZone.shiftStr}
-            onChange={handleChange}
-            data-toggle="tooltip"
-            data-placement="top"
-            title="input format: UTC+0 or UTC-0"
+            value={timeZone > 0 ? 'UTC+' + timeZone : 'UTC' + timeZone}
+            readOnly            
           />            
         </div>
         <div className="form-group col mybutton">

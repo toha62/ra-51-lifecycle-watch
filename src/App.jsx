@@ -27,12 +27,13 @@ function App() {
     },
   ];
 
-  const addWatch = (cityId, timeZone) => {    
+  const addWatch = (cityId) => {    
     setWatchList((prev) => {
       const key = Date.now();
       const tempArr = [...prev];
-      const timeShift = cityList.find(city => city.id === +cityId).shift;
-      tempArr.push({cityId, timeZone, timeShift, key});
+      const timeZone = cityList.find(city => city.id === +cityId).shift;
+      const city = cityList.find(city => city.id === +cityId).name;
+      tempArr.push({city, timeZone, key});
       return tempArr;
     });
   };
