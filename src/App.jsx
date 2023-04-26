@@ -4,12 +4,35 @@ import Watches from './components/Watches';
 
 function App() {
   const [watchList, setWatchList] = useState([]);
+  const cityList = [
+    {
+      id: 1,
+      name: 'New York',
+      shift: -4,
+    },
+    {
+      id: 2,
+      name: 'Moscow',
+      shift: 3,
+    },
+    {
+      id: 3,
+      name: 'London',
+      shift: 0,
+    },
+    {
+      id: 4,
+      name: 'Tokyo',
+      shift: 9,
+    },
+  ];
 
   const addWatch = (cityId, timeZone) => {    
     setWatchList((prev) => {
       const key = Date.now();
       const tempArr = [...prev];
-      tempArr.push({cityId, timeZone, key});
+      const timeShift = cityList.find(city => city.id === +cityId).shift;
+      tempArr.push({cityId, timeZone, timeShift, key});
       return tempArr;
     });
   };
@@ -27,7 +50,10 @@ function App() {
 
   return (
     <div className="container">     
-      <TimeSelect callBack={addWatch} />
+      <TimeSelect
+        cityList={cityList}
+        callBack={addWatch}
+      />
       <Watches
         watchList={watchList}
         handleClose={removeWatch}

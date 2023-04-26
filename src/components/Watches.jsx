@@ -8,6 +8,7 @@ export default function Watches({ watchList, handleClose }) {
         <li key={watch.key} className="list-group-item">
           <Watch
             timeZone={watch.timeZone}
+            timeShift={watch.timeShift}
             handleClose={() => handleClose(watch.key)}
           />
         </li>  

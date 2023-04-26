@@ -1,6 +1,6 @@
 import { useState } from "react";
 
-export default function TimeSelect({ callBack }) {
+export default function TimeSelect({ cityList, callBack }) {
   const [timeZone, setTimeZone] = useState({shiftStr: 'UTC', shiftNum: 0})
 
   const handleSubmit = (evt, callBack) => {
@@ -32,10 +32,9 @@ export default function TimeSelect({ callBack }) {
         <div className="form-group col-3">
           <label htmlFor="name">Название</label>
           <select className="custom-select" id="city" defaultValue="London">
-            <option value="1">New York</option>
-            <option value="2">Moscow</option>
-            <option value="3">London</option>
-            <option value="4">Tokyo</option>
+            {cityList.map(city =>
+              <option key={city.id} value={city.id}>{city.name}</option>
+            )}           
           </select>
         </div>
         <div className="form-group col-3">

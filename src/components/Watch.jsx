@@ -1,10 +1,10 @@
 import { useEffect, useState } from "react";
 
-export default function Watch({ timeZone, handleClose }) {
+export default function Watch({ timeZone, timeShift, handleClose }) {
   const timeCounter = new Date();
   const [seconds, setSeconds] = useState(timeCounter.getUTCSeconds());
   const [minutes, setMinutes] = useState(timeCounter.getUTCMinutes());
-  const [hours, sethours] = useState(timeCounter.getHours(timeCounter.setHours(timeCounter.getUTCHours() + timeZone)));
+  const [hours, sethours] = useState(timeCounter.getUTCHours(timeCounter.setHours(timeCounter.getHours() + timeZone)));
   
   const setValueWithFormat = (value, setFunc) => {
     let strValue = value.toString();
