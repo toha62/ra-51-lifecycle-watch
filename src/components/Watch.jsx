@@ -4,7 +4,7 @@ export default function Watch({ city, timeZone, handleClose }) {
   const getFormattedValue = (value) => {
     let strValue = value.toString();
     strValue = strValue.length === 2 ? strValue : '0' + strValue;
-    
+
     return strValue;
   }
 
@@ -44,7 +44,13 @@ export default function Watch({ city, timeZone, handleClose }) {
         <span key="3">{clock.seconds} </span>
       </div>   
       <div>
-        <button className="btn mb" onClick={handleClose}>close</button>
+        <button className="material-icons close-button" onClick={handleClose}>clear</button>
+      </div>
+      <div className="clock">
+        <div className="arrows seconds" style={{transform: `rotate(${(clock.seconds / 60) * 360 + 180}deg)`}}></div>
+        <div className="arrows minutes" style={{transform: `rotate(${(clock.minutes / 60) * 360 + 180}deg)`}}></div>
+        <div className="arrows hours" style={{transform: `rotate(${(clock.hours / 12) * 360 + 180}deg)`}}></div>
+        <div className="circle"></div>
       </div>
     </>      
   );
